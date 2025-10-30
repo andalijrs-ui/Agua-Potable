@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Editar Colonia{% endblock %}
+
+{% block contenido %}
+<h2 class="mb-4 text-center">✏️ Editar Colonia</h2>
+
+<form method="POST" class="mx-auto" style="max-width: 600px;">
+  <div class="mb-3">
+    <label for="nombre" class="form-label">Nombre de la Colonia</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ colonia.nombre }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="ciudad" class="form-label">Ciudad</label>
+    <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ colonia.ciudad }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="codigo_postal" class="form-label">Código Postal</label>
+    <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" value="{{ colonia.codigo_postal }}" required>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <a href="{{ url_for('listar_colonias') }}" class="btn btn-outline-secondary">🔙 Cancelar</a>
+    <button type="submit" class="btn btn-success">💾 Guardar Cambios</button>
+  </div>
+</form>
+{% endblock %}

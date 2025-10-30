@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}Catálogo de Solicitantes{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">📋 Catálogo de Solicitantes</h2>
+
+  <!-- Formulario de ingreso -->
+  <form method="POST" class="row g-3 mb-4">
+    <div class="col-md-2">
+      <label for="id_solicitante" class="form-label">ID</label>
+      <input type="text" name="id_solicitante" id="id_solicitante" value="{{ solicitante.id_solicitante if solicitante else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-6">
+      <label for="nombre" class="form-label">Solicitante</label>
+      <input type="text" name="nombre" id="nombre" value="{{ solicitante.nombre if solicitante else '' }}" class="form-control" required>
+    </div>
+    <div class="mt-3 text-end">
+    <button type="submit" class="btn btn-primary">
+      {% if solicitante %}💾 Actualizar{% else %}💾 Guardar{% endif %}
+    </button>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">🔙 Salir</a>
+  </div>
+  </form>
+
+  <!-- Tabla de solicitantes -->
+  <table class="table table-bordered table-striped">
+    <thead class="table-light">
+      <tr>
+        <th style="width: 100px;">ID</th>
+        <th>Nombre del Solicitante</th>
+        <th style="width: 120px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in solicitantes %}
+      <tr>
+        <td>{{ s.id_solicitante }}</td>
+        <td>{{ s.nombre }}</td>
+        <td style="white-space: nowrap;">
+          <a href="{{ url_for('editar_solicitante', id=s.id) }}" class="btn btn-sm btn-warning">✏️</a>
+          <a href="{{ url_for('eliminar_solicitante', id=s.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este solicitante?')">🗑️</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

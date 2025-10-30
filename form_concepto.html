@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Agregar Concepto{% endblock %}
+
+{% block contenido %}
+<h2 class="mb-4 text-center">Agregar Concepto</h2>
+
+{% if mensaje %}
+  <div class="alert alert-info text-center">{{ mensaje }}</div>
+{% endif %}
+
+
+<form method="POST">
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label>Clave</label>
+      <input type="text" name="clave" value="{{ concepto.clave if concepto else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-6">
+      <label>Nombre</label>
+      <input type="text" name="nombre" value="{{ concepto.nombre if concepto else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-3">
+      <label>Tipo</label>
+      <select name="tipo" class="form-select" required>
+        <option value="">Seleccione</option>
+        <option value="Fijo" {% if concepto and concepto.tipo == 'Fijo' %}selected{% endif %}>Fijo</option>
+        <option value="Variable" {% if concepto and concepto.tipo == 'Variable' %}selected{% endif %}>Variable</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mt-3 text-end">
+    <button type="submit" class="btn btn-primary">
+      {% if concepto %}💾 Actualizar{% else %}💾 Guardar{% endif %}
+    </button>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">🔙 Salir</a>
+  </div>
+</form>
+
+<hr class="my-4">
+<h4 class="text-primary">📋 Conceptos Registrados</h4>
+
+<table class="table table-bordered table-striped mt-3">
+  <thead class="table-light">
+    <tr>
+      <th>Clave</th>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th style="width: 120px;">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in conceptos %}
+    <tr>
+      <td>{{ c.clave }}</td>
+      <td>{{ c.nombre }}</td>
+      <td>{{ c.tipo }}</td>
+      <td style="white-space: nowrap;">
+        <a href="{{ url_for('editar_concepto', id=c.id) }}" class="btn btn-sm btn-warning">✏️</a>
+        <a href="{{ url_for('eliminar_concepto', id=c.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este concepto?')">🗑️</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

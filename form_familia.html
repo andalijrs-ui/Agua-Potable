@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo %}Catálogo de Familias{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">🏷️ Catálogo de Familias</h2>
+
+  <!-- Formulario -->
+  <form method="POST" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label for="clave" class="form-label">Clave</label>
+      <input type="text" name="clave" id="clave" value="{{ familia.clave if familia else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-6">
+      <label for="nombre" class="form-label">Familia</label>
+      <input type="text" name="nombre" id="nombre" value="{{ familia.nombre if familia else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-3 d-flex align-items-end justify-content-between">
+      <button type="submit" class="btn btn-primary">➕ Agregar</button>
+      <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">↩️ Salir</a>
+    </div>
+  </form>
+
+  <!-- Tabla -->
+  <table class="table table-bordered table-striped">
+    <thead class="table-light">
+      <tr>
+        <th style="width: 120px;">Código</th>
+        <th>Familia</th>
+        <th style="width: 120px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in familias %}
+      <tr>
+        <td>{{ f.clave }}</td>
+        <td>{{ f.nombre }}</td>
+        <td style="white-space: nowrap;">
+          <a href="{{ url_for('editar_familia', id=f.id) }}" class="btn btn-sm btn-warning">✏️</a>
+          <a href="{{ url_for('eliminar_familia', id=f.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta familia?')">🗑️</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

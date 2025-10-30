@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Registro de Usuario{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="text-center mb-4">🧾 Registro de Usuario</h2>
+
+  <div class="text-center mb-4">
+    <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-primary me-2">➕ Base de datos de usuarios</a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">🏠 Inicio</a>
+  </div>
+
+  {% if mensaje %}
+    <div class="alert alert-warning text-center">{{ mensaje }}</div>
+  {% endif %}
+
+  <form action="{{ url_for('agregar_usuario') }}" method="POST" class="row g-3">
+    <h4 class="text-primary">Datos del Usuario</h4>
+    <div class="col-md-4">
+      <label class="form-label">Nombre:</label>
+      <input type="text" name="nombre" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Apellido Paterno:</label>
+      <input type="text" name="apellido_paterno" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Apellido Materno:</label>
+      <input type="text" name="apellido_materno" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Teléfono:</label>
+      <input type="tel" name="telefono" class="form-control">
+    </div>
+    <div class="col-md-8">
+      <label class="form-label">Dirección:</label>
+      <input type="text" name="direccion" class="form-control" required>
+    </div>
+
+    <h4 class="text-primary mt-4">Ubicación</h4>
+    <div class="col-md-4">
+      <label class="form-label">Colonia:</label>
+      <select name="colonia" class="form-select" required>
+        <option value="">Seleccione una colonia</option>
+        <option value="Cruz Azul">Cruz Azul</option>
+        <option value="Progreso Norte">Progreso Norte</option>
+        <option value="Progreso Sur">Progreso Sur</option>
+        <option value="Niza Conejo">Niza Conejo</option>
+        <option value="Azteca">Azteca</option>
+        <option value="Itsmeña">Itsmeña</option>
+        <option value="Guiguba">Guiguba</option>
+        <option value="Fraccionamiento Loma Azul">Fraccionamiento Loma Azul</option>
+        <option value="Fraccionamiento Guiguba">Fraccionamiento Guiguba</option>
+        <option value="Las Flores">Las Flores</option>
+        <option value="El Pedregal">El Pedregal</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Manzana:</label>
+      <input type="text" name="manzana" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Predio:</label>
+      <input type="text" name="predio" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Razón Social:</label>
+      <input type="text" name="razonsocial" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Cia:</label>
+      <input type="text" name="cia" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Ciudad:</label>
+      <input type="text" name="ciudad" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Código Postal:</label>
+      <input type="text" name="codigopostal" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Compañía:</label>
+      <input type="text" name="nombrecompañia" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Habitantes:</label>
+      <input type="number" name="habitantes" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Fecha de Instalación:</label>
+      <input type="date" name="fechainstalacion" class="form-control">
+    </div>
+
+    <h4 class="text-primary mt-4">Servicios</h4>
+    <div class="col-md-12">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="agua_potable">
+        <label class="form-check-label">Agua Potable</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="drenaje">
+        <label class="form-check-label">Drenaje</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="medidor">
+        <label class="form-check-label">Medidor</label>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Lectura Inicial:</label>
+      <input type="text" name="lecturainicial" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">No. Tomas:</label>
+      <input type="number" name="numtomas" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">No. Medidor:</label>
+      <input type="number" name="numeromedidor" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">¿Cómo se Abastece?</label>
+      <input type="text" name="abastecimiento" class="form-control">
+    </div>
+
+    <h4 class="text-primary mt-4">Datos Técnicos</h4>
+    <div class="col-md-3">
+      <label class="form-label">Tipo de Uso:</label>
+      <select name="tipo_uso" class="form-select">
+        <option value="Doméstico">Doméstico</option>
+        <option value="Comercial">Comercial</option>
+        <option value="Industrial">Industrial</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Material Banqueta:</label>
+      <input type="text" name="materialbanqueta" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Material Calle:</label>
+      <input type="text" name="materialcalle" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Cap. Cisterna (m²):</label>
+      <input type="text" name="capacidadcisternam2" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Cap. Tinaco (lts):</label>
+      <input type="text" name="capacidadtinacolts" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">No. Muebles:</label>
+      <input type="text" name="nummuebles" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Área (m²):</label>
+      <input type="text" name="aream2" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Diámetro Drenaje:</label>
+      <input type="text" name="diametrodrenaje" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Marca Medidor:</label>
+      <input type="text" name="marcamedidor" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Diámetro Medidor:</label>
+      <input type="text" name="diametromedidor" class="form-control">
+          </div>
+    <div class="col-md-3">
+      <label class="form-label">Tipo:</label>
+      <input type="text" name="tipo" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Anomalías:</label>
+      <input type="text" name="anomalias" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Subsidio:</label>
+      <input type="text" name="subsidio" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Status:</label>
+      <input type="text" name="status" class="form-control">
+    </div>
+    <div class="col-md-12">
+      <label class="form-label">Observaciones:</label>
+      <textarea name="observaciones" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-success px-5">Guardar Usuario</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block titulo %}Registrar Nuevo Consumo{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="mb-3 text-primary">
+  {% if consumo %}✏️ Editar Consumo{% else %}➕ Registrar Nuevo Consumo{% endif %}
+</h2>
+
+  <form method="POST" class="row g-3">
+    <div class="col-md-2">
+      <label>Tipo de Uso</label>
+      <select name="tipo_uso" class="form-select" required>
+        <option value="">Seleccione</option>
+        <option value="Domestico">Doméstico</option>
+        <option value="Comercial">Comercial</option>
+        <option value="Industrial">Industrial</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label>Cuota Fija</label>
+      <input type="number" step="0.01" name="cuota_fija" class="form-control" required>
+    </div>
+
+    {% for rango in ['basico', 'medio', 'alto', 'maximo', 'excesivo', 'aaa'] %}
+    <div class="col-md-2">
+      <label>Consumo {{ rango|capitalize }}</label>
+      <input type="number" step="0.01" name="consumo_{{ rango }}" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label>Precio {{ rango|capitalize }}</label>
+      <input type="number" step="0.01" name="precio_{{ rango }}" class="form-control">
+    </div>
+    {% endfor %}
+
+    <div class="col-md-2">
+      <label>% Interés Moratorio</label>
+      <input type="number" step="0.01" name="ptje_int_moratorio" class="form-control">
+    </div>
+
+    <div class="col-md-2">
+      <label>Días de Tolerancia</label>
+      <input type="number" name="dias_tolerancia" class="form-control">
+    </div>
+
+    <div class="col-md-2">
+      <label>Día Límite de Pago</label>
+      <input type="number" name="dia_limite_pago" class="form-control">
+    </div>
+
+    <div class="col-md-12 text-end">
+      <button type="submit" class="btn btn-primary">💾 Guardar Consumo</button>
+      <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">🔙 Salir al Inicio</a>
+    </div>
+  </form>
+  <hr class="my-4">
+<h4 class="text-primary">📋 Consumos Registrados</h4>
+
+<table class="table table-bordered table-striped mt-3">
+  <thead class="table-light">
+    <tr>
+      <th style="width: 10px;">Acciones</th>
+      <th style="width: 20px;">ID</th>
+      <th style="width: 20px;">Uso</th>
+      <th style="width: 20px;">Cuota Fija</th>
+      <th style="width: 20px;">C.Medio</th>
+      <th style="width: 20px;">P.Medio</th>
+      <th style="width: 20px;">C.Alto</th>
+      <th style="width: 20px;">P.Alto</th>
+      <th style="width: 20px;">C.Máximo</th>
+      <th style="width: 20px;">P.Máximo</th>
+      <th style="width: 20px;">C.Excesivo</th>
+      <th style="width: 20px;">P.Excesivo</th>
+      <th style="width: 20px;">C.AAA</th>
+      <th style="width: 20px;">P.AAA</th>
+      <th style="width: 20px;">Moratorio</th>
+      <th style="width: 20px;">Día Límite</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in consumos %}
+    <tr>
+      <td>
+  <div class="btn-group" role="group">
+    <a href="{{ url_for('editar_consumo', id=c.id) }}" class="btn btn-sm btn-warning">✏️</a>
+    <a href="{{ url_for('eliminar_consumo', id=c.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este consumo?')">🗑️</a>
+  </div>
+</td>
+      <td>{{ c.id }}</td>
+      <td>
+        {% if c.tipo_uso == 'D' %}Doméstico
+        {% elif c.tipo_uso == 'C' %}Comercial
+        {% elif c.tipo_uso == 'I' %}Industrial
+        {% else %}{{ c.tipo_uso }}
+        {% endif %}
+      </td>
+      <td>${{ "%.2f"|format(c.cuota_fija) }}</td>
+      <td>{{ c.consumo_medio }}</td>
+      <td>${{ "%.2f"|format(c.precio_medio) }}</td>
+      <td>{{ c.consumo_alto }}</td>
+      <td>${{ "%.2f"|format(c.precio_alto) }}</td>
+      <td>{{ c.consumo_maximo }}</td>
+      <td>${{ "%.2f"|format(c.precio_maximo) }}</td>
+      <td>{{ c.consumo_excesivo }}</td>
+      <td>${{ "%.2f"|format(c.precio_excesivo) }}</td>
+      <td>{{ c.consumo_aaa }}</td>
+      <td>${{ "%.2f"|format(c.precio_aaa) }}</td>
+      <td>{{ "%.2f"|format(c.ptje_int_moratorio * 100) }}%</td>
+      <td>{{ c.dia_limite_pago }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

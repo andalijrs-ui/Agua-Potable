@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Editar Usuario{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="text-center mb-4">✏️ Editar Usuario</h2>
+
+  <form method="POST" class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">Folio:</label>
+      <input type="text" name="folio" value="{{ usuario.folio }}" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Nombre:</label>
+      <input type="text" name="nombre" value="{{ usuario.nombre }}" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Apellido:</label>
+      <input type="text" name="apellido_paterno" value="{{ usuario.apellido_paterno }}" class="form-control" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Colonia:</label>
+      <input type="text" name="colonia" value="{{ usuario.colonia }}" class="form-control" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Tipo de uso:</label>
+      <select name="tipo_uso" class="form-select" required>
+        <option value="Doméstico" {% if usuario.tipo_uso == 'Doméstico' %}selected{% endif %}>Doméstico</option>
+        <option value="Comercial" {% if usuario.tipo_uso == 'Comercial' %}selected{% endif %}>Comercial</option>
+        <option value="Industrial" {% if usuario.tipo_uso == 'Industrial' %}selected{% endif %}>Industrial</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Fecha de alta:</label>
+      <input type="date" name="fecha_alta" value="{{ usuario.fecha_alta.strftime('%Y-%m-%d') }}" class="form-control" required>
+    </div>
+
+    <div class="col-12 text-center mt-4">
+      <button type="submit" class="btn btn-success px-5 me-3">Guardar Cambios</button>
+      <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary px-5">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

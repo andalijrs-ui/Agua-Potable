@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Colonias Registradas{% endblock %}
+
+{% block contenido %}
+<h2 class="mb-4 text-center">Colonias Registradas</h2>
+
+<div class="mb-3 d-flex justify-content-between">
+  <a href="{{ url_for('agregar_colonia') }}" class="btn btn-primary">➕ Agregar Nueva Colonia</a>
+  <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">🔙 Salir</a>
+</div>
+
+<table class="table table-striped table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Ciudad</th>
+      <th>Código Postal</th>
+      <th>Fecha</th>
+      <th>Acciones</th> <!-- Nueva columna -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in colonias %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td>{{ c.nombre }}</td>
+      <td>{{ c.ciudad }}</td>
+      <td>{{ c.codigo_postal }}</td>
+      <td>{{ c.fecha_registro.strftime('%d/%m/%Y') }}</td>
+      <td>
+        <a href="{{ url_for('editar_colonia', id=c.id) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+        <a href="{{ url_for('eliminar_colonia', id=c.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta colonia?');">🗑️ Eliminar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

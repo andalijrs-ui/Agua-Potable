@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block titulo %}Lista de Usuarios{% endblock %}
+{% block contenido %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Usuarios</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+    }
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #c3e6cb;
+  text-align: center;
+}
+</style>
+  </style>
+</head>
+<body>
+  <h1>Usuarios Registrados</h1>
+  {% if colonia %}
+  <h2 style="text-align: center;">Colonia seleccionada: {{ colonia }}</h2>
+  {% endif %}
+  <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+  <a href="/usuarios/nuevo"  class="btn btn-primary">➕ Nuevo Usuario</a>
+  <a href="/" class="btn btn-outline-secondary">🔙 Salir</a>
+</div>
+<form id="busqueda-form" class="d-flex flex-wrap align-items-end gap-2 mb-4">
+  <input type="text" name="folio" class="form-control" placeholder="Folio" style="max-width: 200px;">
+  <input type="text" name="nombre" class="form-control" placeholder="Nombre" style="max-width: 200px;">
+  <input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido Paterno" style="max-width: 200px;">
+  <input type="text" name="apellido_materno" class="form-control" placeholder="Apellido Materno" style="max-width: 200px;">
+  <select name="colonia" class="form-control" style="max-width: 200px;">
+  <option value="">-- Seleccione Colonia --</option>
+  <option value="Cruz Azul">Cruz Azul</option>
+  <option value="Progreso Norte">Progreso Norte</option>
+  <option value="Progreso Sur">Progreso Sur</option>
+  <option value="Niza Conejo">Niza Conejo</option>
+  <option value="Azteca">Azteca</option>
+  <option value="Itsmeña">Itsmeña</option>
+  <option value="Guiguba">Guiguba</option>
+  <option value="Fraccionamiento Loma Azul">Fraccionamiento Loma Azul</option>
+  <option value="Fraccionamiento Guiguba">Fraccionamiento Guiguba</option>
+  <option value="Las Flores">Las Flores</option>
+  <option value="El Pedregal">El Pedregal</option>
+</select>
+  <input type="date" name="fecha_alta" class="form-control"  placeholder="Fecha de Alta" style="max-width: 200px;">
+
+   <div style="text-align: center; margin-top: 10px;">
+    <button type="submit" class="btn btn-outline-secondary">🔍 Buscar</button>
+  <a href="/usuarios" class="btn btn-outline-secondary" >🔄 Refrescar</a>
+   </div>
+  
+</form>
+{% if request.args.get('guardado') == 'ok' %}
+  <div class="alert alert-success text-center" role="alert">
+    ✅ Usuario guardado con éxito.
+  </div>
+{% endif %}
+{% if request.args.get('modificado') == 'ok' %}
+  <div class="alert alert-success text-center" role="alert">✅ Usuario modificado con éxito.</div>
+{% endif %}
+{% if request.args.get('eliminado') == 'ok' %}
+  <div class="alert alert-success text-center" role="alert">🗑️ Usuario eliminado con éxito.</div>
+{% endif %}
+<table class="table table-bordered table-striped mt-4">
+ <thead>
+  <tr>
+    <th>ID</th>
+    <th>Folio</th>
+    <th>Nombre</th>
+    <th>Apellido Paterno</th>
+    <th>Apellido Materno</th>
+    <th>Dirección</th>
+    <th>Código Postal</th>
+    <th>Medidor</th>
+    <th>Colonia</th>
+    <th>Tipo de uso</th>
+    <th>Fecha de alta</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+  <tbody id="resultados">
+    {% for usuario in usuarios %}
+    <tr>
+  <td>{{ usuario.id }}</td>
+  <td>{{ usuario.folio }}</td>
+  <td>{{ usuario.nombre }}</td>
+  <td>{{ usuario.apellido_paterno }}</td>
+  <td>{{ usuario.apellido_materno }}</td>
+  <td>{{ usuario.direccion }}</td>
+  <td>{{ usuario.codigopostal }}</td>
+  <td>{{ usuario.medidor }}</td>
+  <td>{{ usuario.colonia }}</td>
+  <td>{{ usuario.tipo_uso }}</td>
+  <td>{{ usuario.fecha_alta.strftime('%d/%m/%Y') }}</td>
+      <td>
+        <a href="/usuarios/{{ usuario.id }}/editar">✏️</a>
+        <a href="/usuarios/{{ usuario.id }}/eliminar">🗑️</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+document.getElementById('busqueda-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+  const params = new URLSearchParams(formData).toString();
+
+  fetch('/usuarios/buscar?' + params)
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.getElementById('resultados');
+      tbody.innerHTML = '';
+
+      data.forEach(usuario => {
+        const fila = `
+          <tr>
+            <td>${usuario.id}</td>
+            <td>${usuario.folio}</td>
+            <td>${usuario.nombre}</td>
+            <td>${usuario.apellido_paterno}</td>
+            <td>${usuario.apellido_materno}</td>
+            <td>${usuario.direccion}</td>
+            <td>${usuario.codigopostal}</td>
+            <td>${usuario.medidor}</td>
+            <td>${usuario.colonia}</td>
+            <td>${usuario.tipo_uso}</td>
+            <td>${usuario.fecha_alta}</td>
+            <td>
+              <a href="/usuarios/${usuario.id}/editar">✏️</a>
+              <a href="/usuarios/${usuario.id}/eliminar">🗑️</a>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += fila;
+      });
+    });
+});
+</script>
+
+</body>
+</html>
+{% endblock %}

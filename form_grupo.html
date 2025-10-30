@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titulo %}Catálogo de Grupos{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">📦 Catálogo de Grupos</h2>
+
+  <!-- Formulario -->
+  <form method="POST" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label for="codigo" class="form-label">Código</label>
+      <input type="text" name="codigo" id="codigo" value="{{ grupo.codigo if grupo else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-5">
+      <label for="nombre" class="form-label">Grupo</label>
+      <input type="text" name="nombre" id="nombre" value="{{ grupo.nombre if grupo else '' }}" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label for="familia" class="form-label">Familia</label>
+      <select name="familia" id="familia" class="form-select" required>
+        <option value="">Seleccione</option>
+        <option value="Materiales">Materiales</option>
+        <option value="Articulo de Limpieza">Articulo de Limpieza</option>
+        <option value="Papeleria">Papeleria</option>
+        <option value="Refacciones">Refacciones</option>
+        {% for f in familias %}
+        <option value="{{ f.clave }}" {% if grupo and grupo.familia == f.clave %}selected{% endif %}>{{ f.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-12 text-end">
+      <button type="submit" class="btn btn-primary">
+      {% if grupo %}💾 Actualizar{% else %}💾 Guardar{% endif %}
+    </button>
+      <a href="{{ url_for('index') }}"  class="btn btn-outline-secondary">↩️ Salir</a>
+    </div>
+  </form>
+
+  <!-- Tabla -->
+  <table class="table table-bordered table-striped">
+    <thead class="table-light">
+      <tr>
+        <th>Familia</th>
+        <th>Código</th>
+        <th>Grupo</th>
+        <th style="width: 120px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for g in grupos %}
+      <tr>
+        <td>{{ g.familia }}</td>
+        <td>{{ g.codigo }}</td>
+        <td>{{ g.nombre }}</td>
+        <td style="white-space: nowrap;">
+          <a href="{{ url_for('editar_grupo', id=g.id) }}" class="btn btn-sm btn-warning">✏️</a>
+          <a href="{{ url_for('eliminar_grupo', id=g.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este grupo?')">🗑️</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

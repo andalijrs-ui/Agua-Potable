@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Catálogo de Tabulador{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">📋 Catálogo de Tabulador</h2>
+
+  <!-- Formulario principal -->
+  <form method="POST" action="{{ url_for('actualizar_tabulador') if editar else url_for('agregar_tabulador') }}">
+    <input type="hidden" name="id" value="{{ editar.id if editar else '' }}">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="numero_grado" class="form-label">Número de Grado:</label>
+        <input type="text" class="form-control" name="numero_grado" required value="{{ editar.numero_grado if editar else '' }}">
+      </div>
+      <div class="col-md-4">
+        <label for="grado" class="form-label">Grado:</label>
+        <input type="text" class="form-control" name="grado" required value="{{ editar.grado if editar else '' }}">
+      </div>
+      <div class="col-md-4">
+        <label for="costo_hora" class="form-label">Costo por Hora:</label>
+        <input type="number" step="0.01" class="form-control" name="costo_hora" required value="{{ editar.costo_hora if editar else '' }}">
+      </div>
+    </div>
+    <div class="d-flex justify-content-center gap-3">
+      <button type="submit" class="btn btn-primary">
+        {% if editar %}💾 Actualizar{% else %}💾 Guardar{% endif %}
+      </button>
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">🔙 Salir</a>
+    </div>
+  </form>
+
+  {% if mensaje %}
+    <div class="alert alert-info mt-4 text-center">{{ mensaje }}</div>
+  {% endif %}
+
+  <!-- Tabla de registros -->
+  <table class="table table-bordered table-hover mt-4">
+    <thead class="table-dark text-center">
+      <tr>
+        <th>Número de Grado</th>
+        <th>Grado</th>
+        <th>Costo por Hora</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tab in tabuladores %}
+      <tr>
+        <td>{{ tab.numero_grado }}</td>
+        <td>{{ tab.grado }}</td>
+        <td>${{ "%.2f"|format(tab.costo_hora) }}</td>
+        <td class="text-center">
+          <form method="GET" action="{{ url_for('editar_tabulador', id=tab.id) }}" class="d-inline">
+            <button class="btn btn-info btn-sm">✏️</button>
+          </form>
+          <form method="POST" action="{{ url_for('eliminar_tabulador', id=tab.id) }}" class="d-inline" onsubmit="return confirm('¿Eliminar este registro?')">
+            <button class="btn btn-danger btn-sm">🗑️</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

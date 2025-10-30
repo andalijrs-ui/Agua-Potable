@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+ <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS (necesario para carrusel) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8">
+
+  <!--ESTILOS DE LA PAGINA PRINCIPAL-->
+  <style>
+.carousel-item img {
+  height: 500px; /* ajusta según tu diseño */
+  object-fit: cover;
+  min-height: 200px;
+  padding: 15px;
+}
+
+  .card {
+  background-color: #ffffff;
+  border: 2px solid #0077b6;
+  padding: 15px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.card:hover {
+  background-color: #ffebee;
+  transform: scale(1.03);
+  border-color: #ff0000;
+}
+  .nav-bar {
+  max-width: 1600px;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 3px solid #0077b6;
+}
+.nav-bar select {
+  max-width: 125px;
+  padding: 6px;
+  font-size: 13px;
+  border-radius: 5px;
+  border: 2px solid #3300ff;
+  background-color: #f4f9ff;
+  color: #000000;
+  font-weight: bold;
+}
+  </style>
+
+</head>
+
+<!--FUNCION PARA EL CARRUSEL-->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const carousel = document.querySelector('#aguaCarrusel');
+    const items = carousel.querySelectorAll('.carousel-item');
+    let currentIndex = 0;
+
+    function showRandomSlide() {
+      items[currentIndex].classList.remove('active');
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * items.length);
+      } while (nextIndex === currentIndex); // evita repetir el mismo
+
+      items[nextIndex].classList.add('active');
+      currentIndex = nextIndex;
+    }
+
+    setInterval(showRandomSlide, 4000); // cambia cada 4 segundos
+  });
+</script>
+
+<body>
+  
+<!--AQUI SE ENCUENTA EL ENCABEZADO-->
+<header  style="display: flex; align-items: center; padding: 20px; background-color: #2c72c3; color: rgb(0, 0, 0);">
+  <!-- Logo -->
+  <img src="/static/cruzazul.png" alt="Logo" style="height: 70px; margin-right: 20px;">
+
+  <!-- Texto -->
+  <div>
+    <h1 style="margin: 0; font-size: 32px; font-family: 'Anton', sans-serif; text-shadow: 1px 1px 2px #ffffff;">
+      BIENVENIDOS AL SISTEMA DE COBRO DEL AGUA POTABLE, LAGUNAS OAXACA
+    </h1>
+    <p style="margin: 0; font-style: italic; color: #050505;">"Cuidar el agua es tarea de todos"</p>
+  </div>
+</header>
+
+<!-- AQUE ESTA EL CONTENEDOR CON TODAS LAS LISTAS -->
+<div class="nav-bar"> 
+  
+
+  <form onchange="this.submit()" method="GET" action="/catalogo">
+    <select name="catalogo">
+      <option value="">Catálogos Generales</option>
+      <option value="usuarios">Catálogo de Usuario</option>
+      <option value="companias">Catálogo de Compañías</option>
+      <option value="colonias">Catálogo de Colonias</option>
+      <option value="consumos">Catálogo de Consumos</option>
+      <option value="conceptos">Catálogo de Conceptos</option>
+      <option value="datos_tecnicos">Catálogo de Datos Técnicos</option>
+      <option value="solicitante">Catálogo de Solicitante</option>
+      <option value="familias">Catálogo de Familias</option>
+      <option value="grupos">Catálogo de Grupos</option>
+      <option value="materiales">Catálogo de Materiales</option>
+      <option value="tabuladores">Catálogo de Tabulador</option>
+      <option value="unidad_medida">Catálogo de Unidad de Medida</option>
+      <option value="proveedores">Catálogo de Proveedores</option>
+    </select>
+  </form>
+
+  <form onchange="this.submit()" method="GET" action="/cobro">
+  <select name="accion">
+    <option value="">Sistema de Cobro</option>
+    <option value="servicio_agua">Cobro de servicio de agua</option>
+    <option value="usuarios_atrasados">Cobro a usuarios atrasados</option>
+    <option value="impresion_recibo">Impresión de recibo</option>
+    <option value="pagos_adelantados">Pagos adelantados</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/instituciones">
+  <select name="accion">
+    <option value="">Instituciones</option>
+    <option value="agregar">Agregar institución</option>
+    <option value="capturar_lectura">Capturar lectura</option>
+    <option value="consulta_lectura">Consulta lectura</option>
+    <option value="impresion_formato">Impresión de formato de lecturas institucionales</option>
+    <option value="consulta_individual">Consulta de lecturas individual</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/lecturas">
+  <select name="accion">
+    <option value="">Captura de lecturas / Medidores</option>
+    <option value="impresion_formato">Impresión de formato de lecturas</option>
+    <option value="captura_lecturas">Captura de lecturas</option>
+    <option value="deudores_materiales">Capturar deudores de materiales</option>
+    <option value="captura_promedio">Capturar promedio de lectura</option>
+    <option value="promediar_lectura">Promediar una lectura</option>
+    <option value="lecturas_anteriores">Captura de lecturas anterior</option>
+    <option value="correccion_lectura">Corrección de toma de lecturas</option>
+    <option value="verificacion_lectura">Verificación de toma de lecturas</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/consultas">
+  <select name="accion">
+    <option value="">Consultas</option>
+    <option value="usuarios_lecturas">Consultas de Usuarios y estados de lecturas</option>
+    <option value="consulta_general">Consulta general de usuarios</option>
+    <option value="cobros_fecha">Cobros por fecha</option>
+    <option value="colonias">Colonias</option>
+    <option value="concentrado_individual">Concentrado individual de cobros</option>
+    <option value="suspension_historia">Historia de suspensión de usuario</option>
+    <option value="adeudos">Adeudos de consumo y materiales</option>
+    <option value="reconexiones">Cobro de reconexiones realizadas</option>
+    <option value="ordenes_trabajo">Consulta de órdenes de trabajo</option>
+    <option value="historial_consumos">Historial de consumos y pagos</option>
+    <option value="total_pagar">Total a pagar</option>
+    <option value="sumatoria_empresas">Sumatoria de empresas</option>
+    <option value="contratos_cancelados">Relación de contratos cancelados</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/reportes">
+  <select name="accion">
+    <option value="">Reportes</option>
+    <option value="adeudo_materiales">Usuarios que adeudan materiales</option>
+    <option value="usuarios_suspendidos">Usuarios suspendidos actualmente</option>
+    <option value="catalogo_materiales">Catálogo de materiales</option>
+    <option value="contrato_servicio">Contrato de servicio</option>
+    <option value="ingresos_fechas">Reporte de ingresos entre fechas (general)</option>
+    <option value="ingresos_diarios">Reporte de ingresos diarios</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/vencimientos">
+  <select name="accion">
+    <option value="">Vencimientos</option>
+    <option value="registro_fechas">Registro de fechas</option>
+    <option value="tiempo_aviso">Tiempo de aviso</option>
+    <option value="usuarios_morosos">Usuarios que no se han presentado a pagar a tiempo</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/almacen">
+  <select name="accion">
+    <option value="">Almacén</option>
+    <option value="inventario_inicial">Inventario inicial</option>
+    <option value="requisicion_compras">Requisición de compras</option>
+    <option value="captura_compras">Captura de compras</option>
+    <option value="vale_salida">Captura de vale de salida</option>
+    <option value="kardex">Kardex de materiales</option>
+
+    <optgroup label="Consultas">
+      <option value="hoja_inventario">Hoja de inventario</option>
+      <option value="precio_materiales">Precio de materiales</option>
+      <option value="costo_ordenes">Costo de órdenes de trabajo</option>
+    </optgroup>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/egresos">
+  <select name="accion">
+    <option value="">Egresos</option>
+    <option value="capturar_egreso">Capturar egreso</option>
+    <option value="capturar_egreso_anterior">Capturar egreso anterior</option>
+
+    <optgroup label="Alta de conceptos">
+      <option value="alta_concepto_egreso">Alta concepto de egreso</option>
+      <option value="alta_concepto_deposito">Alta concepto de depósito</option>
+      <option value="alta_concepto_retiro">Alta concepto de retiro</option>
+    </optgroup>
+
+    <option value="consulta_ingresos_mes">Consulta de ingresos por mes</option>
+    <option value="consulta_egresos_mes">Consulta de egresos por mes</option>
+    <option value="gastos_diarios">Gastos diarios</option>
+    <option value="depositos_municipio">Depósitos a la cuenta del municipio</option>
+    <option value="egresos_municipio">Egresos cuenta municipio</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/ordenes">
+  <select name="accion">
+    <option value="">Generar Órdenes</option>
+    <option value="consulta_anteriores">Consulta de órdenes de trabajo anterior</option>
+    <option value="reinstalacion_servicio">Orden de reinstalación de servicio</option>
+
+    <optgroup label="Elaboración de órdenes de trabajo">
+      <option value="elaboracion_medidores">Medidores</option>
+      <option value="elaboracion_interno">Interno</option>
+      <option value="elaboracion_externo">Externo</option>
+    </optgroup>
+
+    <option value="asignacion_materiales">Asignación de materiales a órdenes de trabajo</option>
+    <option value="formato_arqueo">Imprimir formato de arqueo</option>
+  </select>
+</form>
+
+<form onchange="this.submit()" method="GET" action="/opciones">
+  <select name="accion">
+    <option value="">Opciones</option>
+    <option value="registrar_usuario">Registrar nuevo usuario</option>
+    <option value="cambiar_contrasena">Cambiar mi contraseña</option>
+    <option value="cerrar_sesion">Cerrar mi sesión</option>
+    <option value="salir_sistema">Salir del sistema</option>
+  </select>
+</form>
+</div>
+
+<!--AQUI ESTA EL CONTENEDOR DEL CARRUSEL-->
+<div class="d-flex justify-content-center">
+<div id="aguaCarrusel" class="carousel slide carousel-fade" style="width: 50%;" >  
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{{ url_for('static', filename='img/agua1.jpg') }}" class="d-block w-100" alt="Agua 1">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ url_for('static', filename='img/agua2.jpg') }}" class="d-block w-100" alt="Agua 2">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ url_for('static', filename='img/agua3.jpg') }}" class="d-block w-100" alt="Agua 3">
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Agregar Concepto{% endblock %}
+
+{% block contenido %}
+<h2 class="mb-4 text-center">Agregar Concepto</h2>
+
+{% if mensaje %}
+  <div class="alert alert-info text-center">{{ mensaje }}</div>
+{% endif %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Clave</th>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in conceptos %}
+    <tr>
+      <td>{{ c.clave }}</td>
+      <td>{{ c.nombre }}</td>
+      <td>{{ c.tipo }}</td>
+      <td style="white-space: nowrap;">
+        <a href="{{ url_for('editar_concepto', id=c.id) }}" class="btn btn-sm btn-warning">✏️</a>
+        <a href="{{ url_for('eliminar_concepto', id=c.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este concepto?')">🗑️</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
